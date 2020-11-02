@@ -2,15 +2,20 @@ pipeline {
          
 	agent any
     stages {
-        stage('test2') {
-            steps {
-                 sh 'mkdir -p test2'
+        stage("Delete Workspace"){
+            steps {                 
+                cleanWs deleteDirs: true
+				checkout scm
             }
         }
-        stage('test22') {
-            steps {
-                 sh 'ls'
-            }			
-	    }  
+		
+		stage("Build Application"){           
+			steps {
+				bat '''
+				mvn clean package 
+				'''
+			}     
+		}
+         
     }
 }
